@@ -1,16 +1,34 @@
-const {Schema, model} = require ("mongoose");
+const { Schema, model } = require("mongoose");
 
-const  reviewSchema = new Schema (
-    {
-     title:String,
-     comment:String,
-     score:Number,
+const titleRegex = new RegExp("[a-zA-Z]+") //Just letters 
+const commentRegex = new RegExp("[a-z][0-9]+") //Just letters 
+const reviewSchema = new Schema(
+  {
+    title: {
+      required: true,
+      type: String,
+      maxlength: [20, "maximo de 20 caracteres"],
+      match: [titleRegex, "No debe contener numeros"],
     },
-    {
-        timestamps:true,
-    }
-)
+    comment: {
+        required: true,
+        type: String,
+        maxlength: [50, "maximo de 50 caracteres"],
+        match: [titleRegex, "No debe contener numeros"],
+    },
+    score:  {
+        required: true,
+        type: Number,
+        min: [1, "debe ser minimo 1"],
+        max: [5, "Debe ser maximo 5"],
 
-const Review = model("Review",reviewSchema );
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Review = model("Review", reviewSchema);
 
 module.exports = Review;
